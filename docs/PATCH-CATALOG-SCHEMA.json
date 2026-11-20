@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "project": "Instagram Ultimate Patches",
+  "target": {
+    "packageName": "com.instagram.android",
+    "version": "456.0.0.53.78"
+  },
+  "generatedFrom": {
+    "repository": "https://github.com/SysAdminDoc/HushGram",
+    "ref": "main",
+    "commit": "full commit SHA",
+    "patchListVersion": "upstream version"
+  },
+  "policy": "Upstream declarations are evidence, not independent certification.",
+  "counts": {
+    "total": 0,
+    "declared456": 0,
+    "missing456": [],
+    "uniqueIds": 0
+  },
+  "patches": [
+    {
+      "id": "stable-kebab-case-id",
+      "name": "Upstream patch name",
+      "description": "Upstream description",
+      "category": "category",
+      "upstreamDefaultEnabled": false,
+      "dependencies": [],
+      "options": [],
+      "compatibleVersions": ["456.0.0.53.78"],
+      "targetEvidence": [
+        {
+          "version": "456.0.0.53.78",
+          "experimental": false,
+          "versionCodes": {}
+        }
+      ],
+      "source": {
+        "repository": "upstream URL",
+        "file": "patches-list.json",
+        "commit": "full commit SHA"
+      },
+      "reviewStatus": "upstream-declared-only",
+      "integrationStatus": "not-integrated"
+    }
+  ]
+}
