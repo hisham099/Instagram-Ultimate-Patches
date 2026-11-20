@@ -3,7 +3,7 @@
 **A unified, Instagram-only Morphe Patches project.**  
 **مشروع موحّد لرقع إنستغرام فقط ضمن منظومة Morphe Patches.**
 
-> **Project status / حالة المشروع:** Repository bootstrap and access verified. Patch-source integration, target-version compatibility, and MPP release are **not yet verified or complete**.
+> **Project status / حالة المشروع:** Source audit and 194-entry HushGram metadata catalog committed. Source integration, independent compatibility verification, and MPP release are **not yet complete**.
 
 ## Goal / الهدف
 
@@ -23,12 +23,12 @@ Build one curated MPP package for **Instagram Android 456.0.0.53.78**, combining
 
 ## Candidate upstreams / المصادر المرشحة
 
-See [docs/SOURCES.md](docs/SOURCES.md). Candidate projects include HushGram, Morphe, Piko, Brosssh, Oxbow, and FeurStagram. Inclusion in this list is not an endorsement or a compatibility claim.
+See [docs/SOURCES.md](docs/SOURCES.md) and [the pinned audit](docs/UPSTREAM-AUDIT-2026-11-20.md). HushGram is the primary baseline; Piko, Brosssh, Oxbow and FeurStagram are older-target candidates requiring selective porting. Morphe is the patch framework reference.
 
 ## Repository layout / بنية المستودع
 
 - `docs/` — source review, compatibility decisions, and contribution rules.
-- `patches/catalog.json` — normalized patch inventory; entries must be evidence-backed.
+- `patches/catalog.json` — 194 normalized HushGram manifest records with source commit and upstream compatibility metadata.
 - `patches/` — integrated patch implementation (to be added after source and license review).
 - `.github/workflows/` — reproducible validation and build automation (to be added).
 
@@ -36,10 +36,11 @@ See [docs/SOURCES.md](docs/SOURCES.md). Candidate projects include HushGram, Mor
 
 - GitHub repository access: verified.
 - Default branch: `main`.
-- Repository was empty at bootstrap.
-- Target Instagram version: `456.0.0.53.78`.
+- Source audit pinned to exact upstream commits: see `docs/UPSTREAM-AUDIT-2026-11-20.md`.
+- Catalog: 194 HushGram manifest records (190 upstream-enabled, 4 disabled); all declare `456.0.0.53.78`.
+- HushGram README/manifest discrepancy (186 vs 194) remains open.
+- Catalog metadata is upstream-declared only; no patch is yet independently certified or integrated here.
 - MPP artifact: not built yet.
-- No patch is currently certified compatible by this repository.
 
 ## العربية
 
