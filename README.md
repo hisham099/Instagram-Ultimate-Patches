@@ -41,9 +41,9 @@ See [docs/SOURCES.md](docs/SOURCES.md) and [the pinned audit](docs/UPSTREAM-AUDI
 - Candidate index: 105 records from Piko (66), Brosssh (18), and Oxbow (21); all declare older targets and remain unintegrated.
 - HushGram README/manifest discrepancy (186 vs 194) and Oxbow release/manifest discrepancy (19 vs 21) are documented and remain open.
 - HushGram LICENSE and NOTICE preserved under `third_party/hushgram/`.
-- Catalog validation workflow: **passed** on commit `b69bd2977d697d9f0d92771f69d7af5b68b0aaea`.
+- Catalog validation workflow: **passed** on latest commit `bd7721fe55ee6c9a44b9d7e9a460b3ca0dcc3538` (run [#44798293120](https://github.com/hisham099/Instagram-Ultimate-Patches/actions/runs/44798293120)).
 - Catalog metadata is upstream-declared only; no patch is yet independently certified or integrated here.
-- Pinned HushGram baseline MPP build: **passed** on commit `911923de4f9047faba4e07cda470296750d87c4e`; artifact `hushgram-baseline-0.0.21-911923de4f9047faba4e07cda470296750d87c4e` uploaded. This is not an IUP release.
+- Pinned HushGram baseline MPP build: **passed** again on commit `431881b9de30c0e61b9fbb5d586f69656e7973d8` (run [#44798276484](https://github.com/hisham099/Instagram-Ultimate-Patches/actions/runs/44798276484)); artifact [hushgram-baseline-0.0.21-431881b9de30c0e61b9fbb5d586f69656e7973d8](https://github.com/hisham099/Instagram-Ultimate-Patches/actions/runs/44798276484) uploaded (artifact ID `14660490971`, archive SHA-256 `4ed3b29106294c71754d989bb3d05651fde5245367bfb04de1039a87225b7c78`). This is not an IUP release.
 - Piko/Brosssh/Oxbow/FeurStagram Kotlin and Java implementation roots were located and inventoried; see `docs/MULTI-SOURCE-IMPLEMENTATION-INTAKE-2026-11-20.md`.
 - Brosssh source-level review: 19 Instagram Kotlin implementation files inspected at pinned commit; candidate overlaps and deferred features recorded in [the Brosssh audit](docs/ports/BROSSSH-INSTAGRAM-AUDIT-2026-11-20.md). No Brosssh code has been imported or certified for 456.
 - Piko source-level review: the disappearing-messages swipe gesture is confirmed as a distinct candidate after semantic comparison with HushGram; Kotlin patch, persistent setting, runtime getter, and availability flag were traced. It remains unported and unverified on 456; see [the Piko implementation review](docs/ports/PIKO-DISAPPEARING-MESSAGES-SWIPE.md).
