@@ -57,6 +57,23 @@ jobs:
           test "$actual" = "$expected"
           echo "Pinned HushGram source: $actual"
 
+      - name: Bootstrap missing Linux AAPT2 verification checksum
+        working-directory: upstream/HushGram
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x ./gradlew
+          # The pinned upstream verification file records the Windows AAPT2
+          # artifact but omits the Linux classifier used by this runner.
+          # Ask Gradle to record SHA-256 metadata for the exact failing resource
+          # task, then require that the Linux artifact entry was generated.
+          ./gradlew --no-daemon --write-verification-metadata sha256 :extensions:instagram:compileReleaseNavigationResources
+          grep -F 'aapt2-9.1.0-14792394-linux.jar' gradle/verification-metadata.xml
+          grep -A2 -B1 -F 'aapt2-9.1.0-14792394-linux.jar' gradle/verification-metadata.xml | grep -F '<sha256 value='
+
       - name: Build HushGram baseline MPP
         working-directory: upstream/HushGram
         env:
@@ -64,7 +81,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          chmod +x ./gradlew
           ./gradlew --no-daemon --stacktrace :patches:buildAndroid
 
       - name: Verify release outputs exist
