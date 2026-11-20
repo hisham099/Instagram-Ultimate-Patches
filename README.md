@@ -30,7 +30,7 @@ See [docs/SOURCES.md](docs/SOURCES.md) and [the pinned audit](docs/UPSTREAM-AUDI
 - `docs/` — source review, compatibility decisions, and contribution rules.
 - `patches/catalog.json` — 194 normalized HushGram manifest records with source commit and upstream compatibility metadata.
 - `patches/` — integrated patch implementation (to be added after source and license review).
-- `.github/workflows/` — reproducible validation and build automation (to be added).
+- `.github/workflows/` — catalog validation and pinned HushGram baseline MPP build.
 
 ## Current verification / التحقق الحالي
 
@@ -43,7 +43,8 @@ See [docs/SOURCES.md](docs/SOURCES.md) and [the pinned audit](docs/UPSTREAM-AUDI
 - HushGram LICENSE and NOTICE preserved under `third_party/hushgram/`.
 - Catalog validation workflow: **passed** on commit `b69bd2977d697d9f0d92771f69d7af5b68b0aaea`.
 - Catalog metadata is upstream-declared only; no patch is yet independently certified or integrated here.
-- MPP artifact: not built yet.
+- A pinned upstream baseline MPP build workflow has been added; its run is not yet verified and it is not an IUP release.
+- MPP artifact for the merged IUP project: not built yet.
 
 ## العربية
 
