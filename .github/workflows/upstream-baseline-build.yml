@@ -42,18 +42,11 @@ jobs:
           distribution: temurin
           java-version: "21"
 
-      - name: Install required Android SDK packages
-        shell: bash
-        run: |
-          set -euo pipefail
-          export ANDROID_HOME="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
-          echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
-          SDKMANAGER="$ANDROID_HOME/cmdline-tools/16.0/bin/sdkmanager"
-          test -x "$SDKMANAGER"
-          "$SDKMANAGER" --licenses < <(yes) >/dev/null
-          "$SDKMANAGER" "platform-tools" "platforms;android-35" "build-tools;35.0.0"
-          echo "Android SDK packages installed."
-
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          # Space-separated package IDs; do not request the removed legacy "tools" package.
+          packages: platform-tools platforms;android-35 build-tools;35.0.0
       - name: Verify pinned upstream revision
         working-directory: upstream/HushGram
         shell: bash
