@@ -88,3 +88,28 @@ Prioritize these for source-to-source comparison against HushGram before decidin
 توجد رقع متداخلة مع HushGram مثل إخفاء الإعلانات وInstants وزر Threads وإزالة نافذة انتهاء البناء، كما توجد رقع تحتاج مقارنة أعمق مثل تعطيل التشغيل التلقائي للفيديو، إخفاء جميع القصص، إخفاء زر حفظ Reels، وتقييد الخلاصة بالحسابات المتابَعة.
 
 **لم يتم استيراد أي رقعة من Brosssh ولم يتم اعتمادها للإصدار 456.** السبب أن بصمات DEX ومعرّفات MobileConfig القديمة لا تثبت التوافق مع 456، كما أن بعض الرقع تعتمد على مكتبة Morphe وامتدادات Java لا يمكن حذفها عند النقل. الأولوية التالية هي التحقق من المرشحين المختلفين دلالياً ثم اختبارهم على APK 456 فعلي قبل دمجهم.
+
+
+## Deeper comparison against the pinned HushGram implementation
+
+A second source-level pass checked the actual HushGram Kotlin implementations rather than relying only on catalog labels:
+
+- **Limit feed to following profiles — keep as a distinct candidate, not a duplicate.** Brosssh's Java helper copies the request header map and changes `pagination_source` from `feed_recs` (or null) to `following` on default-feed requests. HushGram's `StartOnFollowingPatch.kt` implements Instagram's own feed picker and remembered-feed flags, with additional user choices (remove For you, fallback behavior, mixing). These are related but not equivalent implementations or UX. Porting Brosssh's forced-header behavior could conflict with the HushGram picker and should be evaluated as an optional mode, not merged as a second unconditional hook.
+- **Hide feed content — behavior substantially overlaps, implementation differs.** HushGram's `Hide the home feed` filters Home's feed items, including reads from the cached feed, and keeps the separate stories row; it also coordinates the empty-feed UI. Brosssh's older patch replaces the `feed_items` JSON field in a parser. HushGram's implementation is broader and more carefully scoped, so do not import Brosssh's parser hook as a duplicate.
+- **Hide Explore feed — overlaps but scope differs.** HushGram has `Hide the Explore grid` and other Explore controls; Brosssh replaces Explore response fields `sectional_items` and `clusters`. The Brosssh implementation is not accepted as an exact duplicate without checking the 456 response shape and intended scope.
+- **Disable video autoplay — not proven duplicate.** HushGram's `Tap to play` gates playback across videos, Reels and stories, and includes user-facing behavior beyond simply forcing an autoplay flag. Brosssh's patch only forces the `ig_disable_video_autoplay` fingerprint to true. Treat this as a possible narrower/alternative mode, not a replacement for Tap to play.
+- **Stop Reels scrolling — duplicate outcome; HushGram is more configurable.** HushGram's pinned source explicitly documents the Reels pager lookup string as present from 456 onward and adds several source-aware controls. Brosssh's implementation disables ViewPager2 input and pull refresh and also changes MobileConfig. Do not import it over the existing HushGram patch.
+- **Hide notes tray — likely same user-visible area, but confirm location before rejection.** HushGram's `Hide the notes row` filters the inbox sections and Map bubble; Brosssh hides a NotesTrayAdapter view in the Direct tab. This is a strong overlap, but the exact view and any Map-bubble behavior differ.
+- **Hide all stories — no exact one-switch counterpart identified.** HushGram has separate controls for suggested stories/highlights and story elements. Brosssh filters suggested, highlighted, and user story entries from the tray through a shared helper. This remains a candidate if users want a complete story-tray removal switch, but must be checked for side effects and 456 parser compatibility.
+- **Hide Reels save button — strongest simple candidate in this Brosssh set.** No exact HushGram catalog patch was found for this specific button. Its implementation is only a MobileConfig override (`81702::5`), so it is a small port candidate but cannot be certified until that flag is checked in the 456 APK/config.
+- **Hide navigation buttons — overlap with existing tab/navigation controls, but Brosssh offers a different per-button implementation.** Its helper reflectively removes enum entries from the navigation list. HushGram already has Hide the Reels tab and tab-bar controls. Do not add a competing global navigation hook without testing interactions and settings.
+
+### Updated candidate priority
+
+1. **Hide Reels save button** — unique behavior candidate; validate MobileConfig flag on 456.
+2. **Hide all stories** — potentially useful extra scope; map its filtering effects and test on 456.
+3. **Limit feed to following profiles** — consider as an optional forced-following mode only if it can coexist cleanly with HushGram's picker.
+4. **Disable video autoplay** — compare user-facing semantics; likely not a replacement for Tap to play.
+5. **Hide Explore feed** — lower priority because HushGram already has Explore controls and Brosssh's scope is unclear.
+
+The Brosssh source's 439 compatibility declaration remains the only compatibility claim for these patches. The comparison above improves the deduplication decision but does not make any Brosssh patch compatible with 456.
