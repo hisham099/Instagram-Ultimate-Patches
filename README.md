@@ -45,6 +45,7 @@ See [docs/SOURCES.md](docs/SOURCES.md) and [the pinned audit](docs/UPSTREAM-AUDI
 - Catalog metadata is upstream-declared only; no patch is yet independently certified or integrated here.
 - Pinned HushGram baseline MPP build: **passed** on commit `911923de4f9047faba4e07cda470296750d87c4e`; artifact `hushgram-baseline-0.0.21-911923de4f9047faba4e07cda470296750d87c4e` uploaded. This is not an IUP release.
 - Piko/Brosssh/Oxbow/FeurStagram Kotlin and Java implementation roots were located and inventoried; see `docs/MULTI-SOURCE-IMPLEMENTATION-INTAKE-2026-11-20.md`.
+- First isolated extra-source code port: Oxbow Clean share links URL utility and 10 dependency-free regression assertions committed under `patches/ports/oxbow-clean-links/`; its Android/Morphe bytecode hooks, unified settings, and 456 APK fingerprint verification remain pending.
 - Additional-source code is not yet part of the IUP build graph; no extra-source patch is certified for 456.0.0.53.78.
 - MPP artifact for the merged IUP project: not built yet.
 
