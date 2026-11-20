@@ -38,7 +38,10 @@ See [docs/SOURCES.md](docs/SOURCES.md) and [the pinned audit](docs/UPSTREAM-AUDI
 - Default branch: `main`.
 - Source audit pinned to exact upstream commits: see `docs/UPSTREAM-AUDIT-2026-11-20.md`.
 - Catalog: 194 HushGram manifest records (190 upstream-enabled, 4 disabled); all declare `456.0.0.53.78`.
-- HushGram README/manifest discrepancy (186 vs 194) remains open.
+- Candidate index: 105 records from Piko (66), Brosssh (18), and Oxbow (21); all declare older targets and remain unintegrated.
+- HushGram README/manifest discrepancy (186 vs 194) and Oxbow release/manifest discrepancy (19 vs 21) are documented and remain open.
+- HushGram LICENSE and NOTICE preserved under `third_party/hushgram/`.
+- Catalog validation workflow: **passed** on commit `b69bd2977d697d9f0d92771f69d7af5b68b0aaea`.
 - Catalog metadata is upstream-declared only; no patch is yet independently certified or integrated here.
 - MPP artifact: not built yet.
 
