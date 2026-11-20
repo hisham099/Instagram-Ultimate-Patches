@@ -38,6 +38,8 @@ public final class InstagramShareLinkCleaner {
 
     public static String cleanUrl(String url) {
         if (url == null) return null;
+        // Defense in depth: never alter non-Instagram URLs, even when this helper is called directly.
+        if (!INSTAGRAM_URL.matcher(url).matches()) return url;
         int queryStart = url.indexOf('?');
         if (queryStart < 0) return url;
         int fragmentStart = url.indexOf('#', queryStart);
