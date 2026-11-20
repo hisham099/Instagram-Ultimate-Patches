@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "project": "Instagram Ultimate Patches",
+  "target": {
+    "package": "com.instagram.android",
+    "version": "456.0.0.53.78"
+  },
+  "patches": []
+}
