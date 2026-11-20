@@ -44,6 +44,9 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          # The legacy 'tools' SDK package was removed from Google's repository.
+          packages: platform-tools, platforms;android-35, build-tools;35.0.0
 
       - name: Verify pinned upstream revision
         working-directory: upstream/HushGram
