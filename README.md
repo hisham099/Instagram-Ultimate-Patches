@@ -46,6 +46,7 @@ See [docs/SOURCES.md](docs/SOURCES.md) and [the pinned audit](docs/UPSTREAM-AUDI
 - Pinned HushGram baseline MPP build: **passed** on commit `911923de4f9047faba4e07cda470296750d87c4e`; artifact `hushgram-baseline-0.0.21-911923de4f9047faba4e07cda470296750d87c4e` uploaded. This is not an IUP release.
 - Piko/Brosssh/Oxbow/FeurStagram Kotlin and Java implementation roots were located and inventoried; see `docs/MULTI-SOURCE-IMPLEMENTATION-INTAKE-2026-11-20.md`.
 - Brosssh source-level review: 19 Instagram Kotlin implementation files inspected at pinned commit; candidate overlaps and deferred features recorded in [the Brosssh audit](docs/ports/BROSSSH-INSTAGRAM-AUDIT-2026-11-20.md). No Brosssh code has been imported or certified for 456.
+- Piko source-level review: the disappearing-messages swipe gesture is confirmed as a distinct candidate after semantic comparison with HushGram; Kotlin patch, persistent setting, runtime getter, and availability flag were traced. It remains unported and unverified on 456; see [the Piko implementation review](docs/ports/PIKO-DISAPPEARING-MESSAGES-SWIPE.md).
 - First Oxbow candidate reviewed at code level: Clean share links was rejected as a duplicate because HushGram already implements a broader version with a declared 456 target; see [the Oxbow review](docs/ports/OXBOW-CLEAN-SHARE-LINKS.md).
 - Additional-source code is not yet part of the IUP build graph; no extra-source patch is certified for 456.0.0.53.78.
 - MPP artifact for the merged IUP project: not built yet.
