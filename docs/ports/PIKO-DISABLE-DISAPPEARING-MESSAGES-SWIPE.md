@@ -67,3 +67,15 @@ A correct port is not just the Kotlin patch file. It requires:
 - [Pref.java](https://github.com/crimera/piko/blob/297519632c897d19e9f0df0c39e5b315d1a7390b/extensions/instagram/src/main/java/app/morphe/extension/instagram/utils/Pref.java)
 - [SettingsStatus.java](https://github.com/crimera/piko/blob/297519632c897d19e9f0df0c39e5b315d1a7390b/extensions/instagram/src/main/java/app/morphe/extension/instagram/settings/SettingsStatus.java)
 - [Constants.kt](https://github.com/crimera/piko/blob/297519632c897d19e9f0df0c39e5b315d1a7390b/patches/src/main/kotlin/app/crimera/patches/instagram/utils/Constants.kt)
+
+
+## 8. Follow-up semantic duplicate review
+
+A second pass inspected the pinned HushGram Instagram patch source tree for disappearing-message, ephemeral-message, vanish-mode, swipe and gesture implementations. No HushGram patch was found that disables the specific upward gesture used to turn on disappearing messages.
+
+Nearby HushGram features are not equivalent:
+- `Stop swipe up to reply` concerns story replies, not the disappearing-messages chat gesture.
+- `Lock your messages` is a message-access/privacy control, not a gesture override.
+- Message history and ephemeral-media features have different behavior and should not be treated as duplicates.
+
+**Updated decision:** retain this as a high-value unique Piko candidate. It remains a source-level candidate only; no code has been imported and no 456 compatibility claim is made. Before porting, inspect the exact 456 APK for the two linked fingerprints and confirm the inserted branch preserves the normal disable-mode gesture cleanup. Keep the preference default off and expose it only if the patch successfully applies.
