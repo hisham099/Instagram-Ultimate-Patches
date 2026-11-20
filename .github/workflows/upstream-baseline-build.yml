@@ -1,0 +1,87 @@
+name: Pinned HushGram baseline MPP build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "patches/catalog.json"
+      - "patches/source-candidates.json"
+      - "docs/**"
+      - "scripts/**"
+      - ".github/workflows/upstream-baseline-build.yml"
+
+permissions:
+  contents: read
+  packages: read
+
+concurrency:
+  group: hushgram-baseline-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-upstream-baseline:
+    name: Build pinned HushGram MPP (baseline only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout this integration repository
+        uses: actions/checkout@v4
+
+      - name: Checkout pinned HushGram source
+        uses: actions/checkout@v4
+        with:
+          repository: SysAdminDoc/HushGram
+          ref: da56d39d7c001bf052bcb7951e3051224bd39928
+          path: upstream/HushGram
+          persist-credentials: false
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Verify pinned upstream revision
+        working-directory: upstream/HushGram
+        shell: bash
+        run: |
+          set -euo pipefail
+          actual="$(git rev-parse HEAD)"
+          expected="da56d39d7c001bf052bcb7951e3051224bd39928"
+          test "$actual" = "$expected"
+          echo "Pinned HushGram source: $actual"
+
+      - name: Build HushGram baseline MPP
+        working-directory: upstream/HushGram
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          chmod +x ./gradlew
+          ./gradlew --no-daemon --stacktrace :patches:buildAndroid
+
+      - name: Verify release outputs exist
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s upstream/HushGram/patches/build/release/patches-0.0.21.mpp
+          test -s upstream/HushGram/patches/build/release/bundle.sha256
+          test -s upstream/HushGram/patches/build/release/patches-0.0.21.cdx.json
+          sha256sum upstream/HushGram/patches/build/release/patches-0.0.21.mpp
+          cat upstream/HushGram/patches/build/release/bundle.sha256
+
+      - name: Upload baseline MPP and SBOM
+        uses: actions/upload-artifact@v4
+        with:
+          name: hushgram-baseline-0.0.21-${{ github.sha }}
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            upstream/HushGram/patches/build/release/patches-0.0.21.mpp
+            upstream/HushGram/patches/build/release/patches-0.0.21.cdx.json
+            upstream/HushGram/patches/build/release/bundle.sha256
