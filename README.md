@@ -3,7 +3,7 @@
 **A unified, Instagram-only Morphe Patches project.**  
 **مشروع موحّد لرقع إنستغرام فقط ضمن منظومة Morphe Patches.**
 
-> **Project status / حالة المشروع:** Source audit and 194-entry HushGram metadata catalog committed. Source integration, independent compatibility verification, and MPP release are **not yet complete**.
+> **Project status / حالة المشروع:** Multi-source source audit and 194-entry HushGram baseline catalog committed. Piko, Brosssh, Oxbow and FeurStagram implementation trees are mapped; source import, per-patch porting, independent compatibility verification, and unified IUP MPP release are **not yet complete**.
 
 ## Goal / الهدف
 
@@ -29,7 +29,7 @@ See [docs/SOURCES.md](docs/SOURCES.md) and [the pinned audit](docs/UPSTREAM-AUDI
 
 - `docs/` — source review, compatibility decisions, and contribution rules.
 - `patches/catalog.json` — 194 normalized HushGram manifest records with source commit and upstream compatibility metadata.
-- `patches/` — integrated patch implementation (to be added after source and license review).
+- `patches/` — normalized catalog and candidate inventory; multi-source implementation import/porting is in progress.
 - `.github/workflows/` — catalog validation and pinned HushGram baseline MPP build.
 
 ## Current verification / التحقق الحالي
@@ -43,7 +43,9 @@ See [docs/SOURCES.md](docs/SOURCES.md) and [the pinned audit](docs/UPSTREAM-AUDI
 - HushGram LICENSE and NOTICE preserved under `third_party/hushgram/`.
 - Catalog validation workflow: **passed** on commit `b69bd2977d697d9f0d92771f69d7af5b68b0aaea`.
 - Catalog metadata is upstream-declared only; no patch is yet independently certified or integrated here.
-- A pinned upstream baseline MPP build workflow has been added; its run is not yet verified and it is not an IUP release.
+- Pinned HushGram baseline MPP build: **passed** on commit `911923de4f9047faba4e07cda470296750d87c4e`; artifact `hushgram-baseline-0.0.21-911923de4f9047faba4e07cda470296750d87c4e` uploaded. This is not an IUP release.
+- Piko/Brosssh/Oxbow/FeurStagram Kotlin and Java implementation roots were located and inventoried; see `docs/MULTI-SOURCE-IMPLEMENTATION-INTAKE-2026-11-20.md`.
+- Additional-source code is not yet part of the IUP build graph; no extra-source patch is certified for 456.0.0.53.78.
 - MPP artifact for the merged IUP project: not built yet.
 
 ## العربية
