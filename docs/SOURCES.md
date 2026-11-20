@@ -6,14 +6,14 @@ This register records candidate sources, not automatic inclusion. Every imported
 
 | Source | Candidate role | Current decision |
 |---|---|---|
-| HushGram | Primary baseline and original patch set | Review first; preserve eligible original patches |
+| HushGram | Primary baseline; current manifest v0.0.21 has 194 Instagram records declaring 456.0.0.53.78 (README says 186, discrepancy unresolved) | Primary integration baseline; build and reconcile count before final catalog |
 | Morphe | Patch framework, conventions, and upstream baseline | Review framework/version alignment |
 | Piko | Additional Instagram patches | Candidate only; older target metadata must be revalidated |
 | Brosssh | Additional patch candidates | Candidate only; exact source revision and target support required |
-| Oxbow | Additional patch candidates / FeurStagram-derived fork | Candidate only; published bundle metadata references Instagram 455.0.0.51.72, not the target |
+| Oxbow | Additional patch candidates / FeurStagram-derived fork; current bundle 1.3.3 lists 19 patches for 455.0.0.51.72 | Selective source review only; not compatible as published |
 | FeurStagram | Additional patch candidates | Candidate only; verify current repository, license, and exact target compatibility |
 
-## Known review cautions
+## Latest audit\n\nSee [UPSTREAM-AUDIT-2026-11-20.md](UPSTREAM-AUDIT-2026-11-20.md) for pinned upstream revisions, manifest counts, target versions, and licensing findings.\n\n## Known review cautions
 
 - A patch bundle targeting Instagram 455.0.0.51.72 is not evidence of compatibility with 456.0.0.53.78.
 - A source guide mentioning 452.x or another older version is not evidence of compatibility with 456.x.
