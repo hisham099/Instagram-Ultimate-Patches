@@ -46,6 +46,7 @@ See [docs/SOURCES.md](docs/SOURCES.md) and [the pinned audit](docs/UPSTREAM-AUDI
 - Pinned HushGram baseline MPP build: **passed** on commit `911923de4f9047faba4e07cda470296750d87c4e`; artifact `hushgram-baseline-0.0.21-911923de4f9047faba4e07cda470296750d87c4e` uploaded. This is not an IUP release.
 - Piko/Brosssh/Oxbow/FeurStagram Kotlin and Java implementation roots were located and inventoried; see `docs/MULTI-SOURCE-IMPLEMENTATION-INTAKE-2026-11-20.md`.
 - First Oxbow candidate reviewed at code level: Clean share links was rejected as a duplicate because HushGram already implements a broader version with a declared 456 target; see `docs/ports/OXBOW-CLEAN-SHARE-LINKS.md`.
+- First distinct Piko candidate reviewed at code level: `Disable disappearing messages swipe`; it is unique in the preliminary HushGram search but still needs exact 456 bytecode fingerprint validation before porting; see `docs/ports/PIKO-DISAPPEARING-MESSAGES-GESTURE.md`.
 - Additional-source code is not yet part of the IUP build graph; no extra-source patch is certified for 456.0.0.53.78.
 - MPP artifact for the merged IUP project: not built yet.
 
