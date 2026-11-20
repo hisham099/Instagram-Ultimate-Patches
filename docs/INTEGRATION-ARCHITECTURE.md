@@ -35,3 +35,10 @@ The baseline artifact must not be renamed or published as an IUP release.
 ## Important distinction
 
 A successful catalog validator only checks the JSON inventory. A successful baseline build proves the pinned HushGram project builds. Neither proves that any extra candidate patch has been ported or that a combined IUP package exists.
+
+
+## Multi-source implementation intake (2026-11-20)
+
+A recursive Git-tree audit has now located the actual Kotlin patch and Java extension source roots in Piko, Brosssh, Oxbow and FeurStagram. See [MULTI-SOURCE-IMPLEMENTATION-INTAKE-2026-11-20.md](MULTI-SOURCE-IMPLEMENTATION-INTAKE-2026-11-20.md) for pinned commits, source-file counts, feature families and the import order.
+
+The extra sources are **not** yet copied into the IUP build graph. Their manifest records remain candidates until each patch's Kotlin implementation, extension classes/resources, dependencies, settings, localization and exact 456.0.0.53.78 fingerprints are mapped and ported. Oxbow and FeurStagram are related lineages and must be deduplicated by implementation, not added as two full feature sets.
