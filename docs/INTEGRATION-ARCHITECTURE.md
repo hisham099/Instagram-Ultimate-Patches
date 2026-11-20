@@ -24,9 +24,18 @@ This is a **baseline build**, not the merged Instagram Ultimate Patches bundle. 
 
 The baseline artifact must not be renamed or published as an IUP release.
 
+## Latest verified baseline snapshot (2026-11-20)
+
+- Baseline workflow run [44798276484](https://github.com/hisham099/Instagram-Ultimate-Patches/actions/runs/44798276484) completed with **success** on integration commit `431881b9de30c0e61b9fbb5d586f69656e7973d8`.
+- Uploaded artifact: `hushgram-baseline-0.0.21-431881b9de30c0e61b9fbb5d586f69656e7973d8`, artifact ID `14660490971`.
+- GitHub reports the artifact ZIP digest as `sha256:4ed3b29106294c71754d989bb3d05651fde5245367bfb04de1039a87225b7c78`. This is the archive digest, **not** the MPP's internal `bundle.sha256`.
+- Catalog validation passed on the newer current main commit `bd7721fe55ee6c9a44b9d7e9a460b3ca0dcc3538` (run [44798293120](https://github.com/hisham099/Instagram-Ultimate-Patches/actions/runs/44798293120)).
+- The build workflow currently bootstraps the missing Linux AAPT2 Gradle verification checksum by asking Gradle to write SHA-256 metadata for the downloaded artifact. That allowed this baseline build to pass, but the checksum is not independently pinned in this repository. Before treating the build as release-grade, replace this bootstrap with a checksum obtained from a separately trusted upstream source and verify the artifact against it.
+- The baseline is still upstream HushGram output. No IUP merge or IUP release is implied by this successful run.
+
 ## Next integration gates
 
-1. Complete the baseline workflow and inspect its artifact and Gradle logs.
+1. Inspect the uploaded baseline artifact contents and build logs; replace the runtime-generated AAPT2 verification checksum with independently trusted checksum metadata.
 2. Decide whether to vendor the complete HushGram source tree or maintain it as a pinned upstream subtree/submodule; keep the full source history/provenance and all required notices.
 3. Port selected Piko/Brosssh/Oxbow patches one at a time, including Kotlin implementation, extension Java/resources, dependencies, settings, and localization.
 4. Run upstream unit/patch tests and build against the exact Instagram 456.0.0.53.78 APK build(s) listed in the pinned upstream catalog.
