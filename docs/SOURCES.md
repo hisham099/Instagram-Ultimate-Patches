@@ -1,13 +1,13 @@
 # Upstream sources and review register / سجل المصادر
 
-Audit date: 2026-11-20. See [the pinned audit](UPSTREAM-AUDIT-2026-11-20.md) for immutable commits and evidence.
+Audit date: 2026-11-20. See [the pinned audit](UPSTREAM-AUDIT-2026-11-20.md) for immutable commits and evidence. See [source-candidates.json](../patches/source-candidates.json) for the normalized Piko/Brosssh/Oxbow candidate inventory.
 
 | Source | Current evidence | Decision |
 |---|---|---|
 | [HushGram](https://github.com/SysAdminDoc/HushGram) | v0.0.21; manifest has 194 Instagram records, 190 upstream-enabled and 4 disabled; all declare 456.0.0.53.78. README says 186, so count reconciliation remains open. | Primary baseline. Catalog metadata imported; source implementation not yet imported. Preserve LICENSE and NOTICE. |
 | [Piko](https://github.com/crimera/piko) | v3.11.1; 66 Instagram entries, all declare 452.1.0.53.64. | Candidate for per-patch porting only. |
 | [Brosssh](https://github.com/brosssh/morphe-patches) | v2.8.2; 18 Instagram entries, all declare 439.0.0.37.89. | Candidate for per-patch porting only. |
-| [Oxbow](https://github.com/aic0d3r/oxbow) | Bundle 1.3.3; 19 patches target 455.0.0.51.72. | Candidate only; old target. |
+| [Oxbow](https://github.com/aic0d3r/oxbow) | Manifest lists 21 Instagram entries for 455.0.0.51.72; release description says 19. | Candidate only; old target. |
 | [FeurStagram](https://github.com/jean-voila/FeurStagram) | Standalone GPL-3.0 Instagram-derived source; related to Oxbow; not a directly compatible MPP bundle. | Inspect for unique implementation ideas; port required. |
 | [Morphe patches](https://github.com/MorpheApp/morphe-patches) | Current main snapshot includes YouTube Music, Reddit and YouTube; no Instagram patch module found. | Framework and lineage reference, not a current additional Instagram patch source in this snapshot. |
 
