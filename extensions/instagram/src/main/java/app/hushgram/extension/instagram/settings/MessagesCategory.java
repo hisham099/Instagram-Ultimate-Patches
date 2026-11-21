@@ -142,9 +142,9 @@ final class MessagesCategory {
             }
             if (build.contains(PatchFamily.DISAPPEARING_MESSAGES_GESTURE)) {
                 messages.addPreference(toggle(context, Settings.DISABLE_DISAPPEARING_MESSAGES_GESTURE,
-                        L10n.t("Disable disappearing messages swipe"),
-                        L10n.t("Stops an upward swipe in a chat from turning on disappearing messages. "
-                                + "Instagram's other chat gestures stay unchanged.")));
+                        L10n.bilingual("Disable disappearing messages swipe", "تعطيل إيماءة السحب لتفعيل الرسائل المختفية"),
+                        L10n.bilingual("Stops an upward swipe in a chat from turning on disappearing messages. Instagram's other chat gestures stay unchanged.",
+                                "يمنع السحب إلى الأعلى داخل المحادثة من تفعيل وضع الرسائل المختفية، مع إبقاء إيماءات المحادثة الأخرى في إنستغرام كما هي.")));
             }
             // Under Ads and privacy until 2026-10-26, and a search for that still finds it.
             if (build.contains(PatchFamily.DM_MEDIA_SEEN)) {
