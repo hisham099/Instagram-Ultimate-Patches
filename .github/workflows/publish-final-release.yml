@@ -1,0 +1,115 @@
+name: Publish IUP final MPP release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "patches/**"
+      - "extensions/**"
+      - "build.gradle.kts"
+      - "settings.gradle.kts"
+      - "gradle/**"
+      - "gradle.properties"
+      - "gradlew"
+      - ".github/workflows/publish-final-release.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: read
+
+concurrency:
+  group: iup-final-release-v0.0.21
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Test, build and publish IUP MPP
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout integrated IUP source
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools platforms;android-35 build-tools;35.0.0
+
+      - name: Verify pinned upstream and Instagram target
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -F '"commit": "da56d39d7c001bf052bcb7951e3051224bd39928"' third_party/hushgram/UPSTREAM-PIN.json
+          grep -F 'INSTAGRAM_TARGET_VERSION = "456.0.0.53.78"' patches/src/main/kotlin/app/morphe/patches/shared/compat/AppCompatibilities.kt
+
+      - name: Bootstrap Linux AAPT2 checksum
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x ./gradlew
+          ./gradlew --no-daemon --write-verification-metadata sha256 :extensions:instagram:compileReleaseNavigationResources
+          grep -F 'aapt2-9.1.0-14792394-linux.jar' gradle/verification-metadata.xml
+          grep -A2 -B1 -F 'aapt2-9.1.0-14792394-linux.jar' gradle/verification-metadata.xml | grep -F '<sha256 value='
+
+      - name: Run patch and extension unit tests
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          ./gradlew --no-daemon --stacktrace :patches:test :extensions:instagram:testDebugUnitTest
+
+      - name: Generate patch catalog and build MPP
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          ./gradlew --no-daemon --stacktrace :patches:generatePatchesList :patches:buildAndroid
+
+      - name: Verify release files and checksum
+        id: verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s patches/build/release/patches-0.0.21.mpp
+          test -s patches/build/release/patches-0.0.21.cdx.json
+          test -s patches/build/release/bundle.sha256
+          sha256sum patches/build/release/patches-0.0.21.mpp
+          cat patches/build/release/bundle.sha256
+          cp patches/build/release/patches-0.0.21.mpp IUP-Instagram-Patches-0.0.21.mpp
+          cp patches/build/release/patches-0.0.21.cdx.json IUP-Instagram-Patches-0.0.21.cdx.json
+          cp patches/build/release/bundle.sha256 IUP-Instagram-Patches-0.0.21.sha256
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: iup-v0.0.21
+          name: Instagram Ultimate Patches v0.0.21
+          target_commitish: ${{ github.sha }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          body: |
+            ## Instagram Ultimate Patches — integrated release
+
+            - Integrated source architecture pinned to HushGram `0.0.21` (`da56d39d7c001bf052bcb7951e3051224bd39928`).
+            - Target declaration: Instagram `456.0.0.53.78` (ARM64 code `386214574`).
+            - Includes the IUP-native Piko-derived **Disable disappearing messages swipe** patch with a default-off setting and Arabic/English UI text.
+            - Brosssh **Hide Reels save button** is intentionally not included: its upstream implementation depends on a MobileConfig override helper that this HushGram line removed due ban-risk concerns. No unsafe substitute is shipped.
+
+            **Compatibility note:** the source compiles and the patch bundle builds, but the Piko-derived gesture fingerprint has not been independently exercised against a local Instagram `456.0.0.53.78` DEX fixture. Treat that individual patch as unverified on-device until that validation is performed. This does not affect the verified build of the MPP bundle itself.
+          files: |
+            IUP-Instagram-Patches-0.0.21.mpp
+            IUP-Instagram-Patches-0.0.21.cdx.json
+            IUP-Instagram-Patches-0.0.21.sha256
