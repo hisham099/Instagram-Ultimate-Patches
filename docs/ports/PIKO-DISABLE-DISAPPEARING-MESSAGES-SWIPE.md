@@ -125,3 +125,24 @@ These are proposed IUP strings, not yet added to an application resource bundle.
 | Arabic/English resource entries | Text prepared; not yet in app resources |
 | Exact 456 APK fingerprint match | **Unverified; target APK/DEX required** |
 | IUP code import/build/runtime test | Not done |
+## 11. HushGram baseline integration mapping (2026-11-21)
+
+The pinned HushGram baseline uses a different extension/settings namespace from Piko. This rules out copying Piko's Java files verbatim:
+
+- HushGram Instagram extension package: `app.hushgram.extension.instagram` (not `app.morphe.extension.instagram`).
+- HushGram setting declarations live in `extensions/instagram/src/main/java/app/hushgram/extension/instagram/settings/Settings.java` and extend the shared `BaseSettings` model. A feature preference should be a HushGram `BooleanSetting` with a namespaced key and default `FALSE`.
+- HushGram build-availability methods live in `.../settings/SettingsStatus.java`; their default is false and feature patches enable them at patch time.
+- `patches/src/main/kotlin/app/morphe/patches/instagram/misc/extension/ExtensionSupport.kt` provides `enableStatus(name)`, which requires the Instagram extension patch and rewrites the matching status method to true.
+- The existing HushGram `settingsPatch` depends on `instagramExtensionPatch`; it is not Piko's `settingsPatch` and should remain the settings UI provider.
+- HushGram's extension namespace is `Lapp/hushgram/extension/instagram`, so the Piko `PREF_CALL_DESCRIPTOR` cannot be reused. The port needs a HushGram-native runtime accessor or a direct settings read following the baseline's established pattern.
+
+### Concrete port shape for HushGram/IUP
+
+1. Add a default-off BooleanSetting such as `hushgram_disable_disappearing_messages_gesture` to HushGram's `Settings.java`.
+2. Add a false-by-default `disableDisappearingMessagesGesture()` status method to `SettingsStatus.java`.
+3. Add a small extension accessor that returns the saved BooleanSetting only when the status method is true; do not import Piko's `Pref`, `SettingsStatus`, or `ScreenBuilder` classes.
+4. Adapt the Kotlin patch to HushGram's `AppCompatibilities.instagram()` and `enableStatus`/extension helpers, retaining the two-fingerprint cross-check and register-safe branch insertion.
+5. Add the new switch and its description to HushGram's existing settings catalogue/resources, with Arabic and English text and RTL-safe layout.
+6. Add the port as an overlay in IUP's build workflow, then run patch-application tests against the exact 456 APK before marking it build-verified.
+
+This mapping is source-architecture work only. No HushGram source file has been modified by this audit commit, and no Piko implementation has been copied into the IUP build graph.
