@@ -1,4 +1,4 @@
-name: Pinned HushGram baseline MPP build
+name: IUP integrated MPP build
 
 on:
   workflow_dispatch:
@@ -6,7 +6,6 @@ on:
     branches: [main]
     paths:
       - "patches/catalog.json"
-      - "patches/source-candidates.json"
       - "patches/src/**"
       - "extensions/**"
       - "build.gradle.kts"
@@ -19,25 +18,17 @@ permissions:
   packages: read
 
 concurrency:
-  group: hushgram-baseline-${{ github.ref }}
+  group: iup-integrated-mpp-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build-upstream-baseline:
-    name: Build pinned HushGram MPP (baseline only)
+    name: Build integrated IUP MPP
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
       - name: Checkout this integration repository
         uses: actions/checkout@v4
-
-      - name: Checkout pinned HushGram source
-        uses: actions/checkout@v4
-        with:
-          repository: SysAdminDoc/HushGram
-          ref: da56d39d7c001bf052bcb7951e3051224bd39928
-          path: upstream/HushGram
-          persist-credentials: false
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -50,18 +41,14 @@ jobs:
         with:
           # Space-separated package IDs; do not request the removed legacy "tools" package.
           packages: platform-tools platforms;android-35 build-tools;35.0.0
-      - name: Verify pinned upstream revision
-        working-directory: upstream/HushGram
+      - name: Verify imported source pin
         shell: bash
         run: |
           set -euo pipefail
-          actual="$(git rev-parse HEAD)"
-          expected="da56d39d7c001bf052bcb7951e3051224bd39928"
-          test "$actual" = "$expected"
-          echo "Pinned HushGram source: $actual"
+          grep -F '"commit": "da56d39d7c001bf052bcb7951e3051224bd39928"' third_party/hushgram/UPSTREAM-PIN.json
+          grep -F 'INSTAGRAM_TARGET_VERSION = "456.0.0.53.78"' patches/src/main/kotlin/app/morphe/patches/shared/compat/AppCompatibilities.kt
 
       - name: Bootstrap missing Linux AAPT2 verification checksum
-        working-directory: upstream/HushGram
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -77,29 +64,28 @@ jobs:
           grep -F 'aapt2-9.1.0-14792394-linux.jar' gradle/verification-metadata.xml
           grep -A2 -B1 -F 'aapt2-9.1.0-14792394-linux.jar' gradle/verification-metadata.xml | grep -F '<sha256 value='
 
-      - name: Build HushGram baseline MPP
-        working-directory: upstream/HushGram
+      - name: Generate IUP patch catalog and build integrated MPP
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          ./gradlew --no-daemon --stacktrace :patches:buildAndroid
+          ./gradlew --no-daemon --stacktrace :patches:generatePatchesList :patches:buildAndroid
 
       - name: Verify release outputs exist
         shell: bash
         run: |
           set -euo pipefail
-          test -s upstream/HushGram/patches/build/release/patches-0.0.21.mpp
+          test -s patches/build/release/patches-0.0.21.mpp
           test -s upstream/HushGram/patches/build/release/bundle.sha256
           test -s upstream/HushGram/patches/build/release/patches-0.0.21.cdx.json
           sha256sum upstream/HushGram/patches/build/release/patches-0.0.21.mpp
           cat upstream/HushGram/patches/build/release/bundle.sha256
 
-      - name: Upload baseline MPP and SBOM
+      - name: Upload integrated IUP MPP and SBOM
         uses: actions/upload-artifact@v4
         with:
-          name: hushgram-baseline-0.0.21-${{ github.sha }}
+          name: iup-integrated-0.0.21-${{ github.sha }}
           if-no-files-found: error
           retention-days: 14
           path: |
