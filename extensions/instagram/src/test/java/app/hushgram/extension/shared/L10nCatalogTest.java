@@ -311,7 +311,14 @@ public class L10nCatalogTest {
                 int open = call.end() - 1;
                 int close = closing(text, kind, open);
                 assertTrue(file + ": an L10n call with no closing bracket", close > 0);
-                keys.addAll(literalsIn(text, kind, open + 1, close, null));
+                List<String> literals = literalsIn(text, kind, open + 1, close, null);
+                // bilingual() takes the English catalog key first and its Arabic display text
+                // second. Only the first literal belongs in the translation tables.
+                if (text.substring(call.start(), call.end()).contains("bilingual")) {
+                    if (!literals.isEmpty()) keys.add(literals.get(0));
+                } else {
+                    keys.addAll(literals);
+                }
             }
         }
         for (PatchFamily family : PatchFamily.values()) {
