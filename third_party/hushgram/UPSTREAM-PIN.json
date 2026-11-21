@@ -1,0 +1,6 @@
+{
+  "repository": "https://github.com/SysAdminDoc/HushGram",
+  "tag_or_version": "0.0.21",
+  "commit": "da56d39d7c001bf052bcb7951e3051224bd39928",
+  "import_policy": "Merge upstream source tree while preserving all pre-existing IUP files; no APK fixture required for source integration."
+}
