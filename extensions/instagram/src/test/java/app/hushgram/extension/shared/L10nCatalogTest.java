@@ -312,11 +312,9 @@ public class L10nCatalogTest {
                 int close = closing(text, kind, open);
                 assertTrue(file + ": an L10n call with no closing bracket", close > 0);
                 List<String> literals = literalsIn(text, kind, open + 1, close, null);
-                // bilingual() takes the English catalog key first and its Arabic display text
-                // second. Only the first literal belongs in the translation tables.
-                if (text.substring(call.start(), call.end()).contains("bilingual")) {
-                    if (!literals.isEmpty()) keys.add(literals.get(0));
-                } else {
+                // bilingual() deliberately bypasses the translation catalog: it carries
+                // its own English and Arabic display values. Neither literal is a catalog key.
+                if (!text.substring(call.start(), call.end()).contains("bilingual")) {
                     keys.addAll(literals);
                 }
             }
