@@ -1,0 +1,70 @@
+name: Import pinned HushGram source tree
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/import-hushgram-source.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: import-hushgram-source
+  cancel-in-progress: false
+
+jobs:
+  import-source:
+    name: Import HushGram 0.0.21 source into IUP
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout IUP
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout pinned HushGram
+        uses: actions/checkout@v4
+        with:
+          repository: SysAdminDoc/HushGram
+          ref: da56d39d7c001bf052bcb7951e3051224bd39928
+          path: /tmp/HushGram
+          persist-credentials: false
+
+      - name: Verify upstream pin and import non-conflicting files
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/HushGram
+          test "$(git rev-parse HEAD)" = "da56d39d7c001bf052bcb7951e3051224bd39928"
+          cd "$GITHUB_WORKSPACE"
+          rsync -a --ignore-existing \
+            --exclude='.git/' \
+            --exclude='fixtures/' \
+            /tmp/HushGram/ ./
+          mkdir -p third_party/hushgram
+          cat > third_party/hushgram/UPSTREAM-PIN.json <<'EOF'
+          {
+            "repository": "https://github.com/SysAdminDoc/HushGram",
+            "tag_or_version": "0.0.21",
+            "commit": "da56d39d7c001bf052bcb7951e3051224bd39928",
+            "import_policy": "Merge upstream source tree while preserving all pre-existing IUP files; no APK fixture required for source integration."
+          }
+          EOF
+          echo "Imported source files: $(find patches extensions scripts -type f | wc -l)"
+
+      - name: Commit imported source tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No source changes to commit."
+            exit 0
+          fi
+          git commit -m "build: import pinned HushGram 0.0.21 source architecture"
+          git push
