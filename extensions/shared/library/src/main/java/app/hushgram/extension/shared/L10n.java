@@ -109,6 +109,12 @@ public final class L10n {
         return lookUp(tags(context), english);
     }
 
+    /** A focused Arabic/English string using the application's configured text locale. */
+    public static String bilingual(String english, String arabic) {
+        if (english == null || english.isEmpty()) return english;
+        return "ar".equalsIgnoreCase(textLocale(context()).getLanguage()) ? arabic : english;
+    }
+
     /** {@link String#format} over the translated form of {@code english}. */
     public static String f(String english, Object... args) {
         return f(context(), english, args);
