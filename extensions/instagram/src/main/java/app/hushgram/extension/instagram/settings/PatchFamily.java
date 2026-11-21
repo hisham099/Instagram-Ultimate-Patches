@@ -102,6 +102,8 @@ public enum PatchFamily {
             Settings.KEEP_CHATS_UNREAD, Settings.MARK_SEEN_ON_REPLY, Settings.MARK_SEEN_ON_REACTION, Settings.MARK_READ_IN_CHAT,
             Settings.SEEN_PER_CHAT),
     TYPING(FamilyNames.TYPING, "typing", null, Settings.HIDE_TYPING),
+    DISAPPEARING_MESSAGES_GESTURE(FamilyNames.DISAPPEARING_MESSAGES_GESTURE, "disappearingMessagesGesture", null,
+            Settings.DISABLE_DISAPPEARING_MESSAGES_GESTURE),
     ACTIVE_STATUS(FamilyNames.ACTIVE_STATUS, "activeStatus", null, Settings.HIDE_ACTIVE_STATUS),
     LAST_ACTIVE(FamilyNames.LAST_ACTIVE, "lastActive", null, Settings.SHOW_LAST_ACTIVE),
     SHORT_ACTIVE_NOW(FamilyNames.SHORT_ACTIVE_NOW, "shortActiveNow", null, Settings.SHORT_ACTIVE_NOW),
