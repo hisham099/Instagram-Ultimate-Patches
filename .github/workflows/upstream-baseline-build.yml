@@ -12,7 +12,6 @@ on:
       - "settings.gradle.kts"
       - "gradle/**"
       - "scripts/**"
-      - "extensions/shared/library/src/main/l10n/**"
       - ".github/workflows/upstream-baseline-build.yml"
 
 permissions:
@@ -44,13 +43,6 @@ jobs:
           # Space-separated package IDs; do not request the removed legacy "tools" package.
           packages: platform-tools platforms;android-35 build-tools;35.0.0
 
-      - name: Set up Python for localization generation
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Generate bilingual localization catalog
-        run: python scripts/gen-l10n.py
       - name: Verify imported source pin
         shell: bash
         run: |
