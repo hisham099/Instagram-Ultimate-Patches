@@ -315,9 +315,7 @@ public class UnfollowersTest {
         Object previous = field.get(null);
         try {
             field.set(null, null);
-            // STORED queues the disk write; seen() reports that the snapshot was accepted.
-            // The failed asynchronous write must clear its generation so the same list can retry.
-            assertTrue(Unfollowers.seen(users("ana", "bo"), list, list, ON, Unfollowers.STORED, 100));
+            assertFalse(Unfollowers.seen(users("ana", "bo"), list, list, ON, Unfollowers.STORED, 100));
         } finally {
             field.set(null, previous);
         }
@@ -406,7 +404,8 @@ public class UnfollowersTest {
         FakeList list = new FakeList();
         list.count = 2;
         try {
-            assertFalse(Unfollowers.seen(users("ana", "bo"), list, list, ON, Unfollowers.STORED, 100));
+            // The snapshot is accepted synchronously; the disk write fails on the worker.
+            assertTrue(Unfollowers.seen(users("ana", "bo"), list, list, ON, Unfollowers.STORED, 100));
             Utils.awaitBackgroundTasksForTests();
             assertEquals(0, Unfollowers.shown(context).checked);
         } finally {
