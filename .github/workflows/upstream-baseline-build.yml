@@ -77,10 +77,10 @@ jobs:
         run: |
           set -euo pipefail
           test -s patches/build/release/patches-0.0.21.mpp
-          test -s upstream/HushGram/patches/build/release/bundle.sha256
-          test -s upstream/HushGram/patches/build/release/patches-0.0.21.cdx.json
-          sha256sum upstream/HushGram/patches/build/release/patches-0.0.21.mpp
-          cat upstream/HushGram/patches/build/release/bundle.sha256
+          test -s patches/build/release/bundle.sha256
+          test -s patches/build/release/patches-0.0.21.cdx.json
+          sha256sum patches/build/release/patches-0.0.21.mpp
+          cat patches/build/release/bundle.sha256
 
       - name: Upload integrated IUP MPP and SBOM
         uses: actions/upload-artifact@v4
@@ -89,6 +89,6 @@ jobs:
           if-no-files-found: error
           retention-days: 14
           path: |
-            upstream/HushGram/patches/build/release/patches-0.0.21.mpp
-            upstream/HushGram/patches/build/release/patches-0.0.21.cdx.json
-            upstream/HushGram/patches/build/release/bundle.sha256
+            patches/build/release/patches-0.0.21.mpp
+            patches/build/release/patches-0.0.21.cdx.json
+            patches/build/release/bundle.sha256
