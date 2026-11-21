@@ -61,6 +61,7 @@ public final class FamilyNames {
     public static final String BLOCKED_SEARCH = "Search blocked accounts";
     public static final String THREAD_SEEN = "Read messages without the seen receipt";
     public static final String TYPING = "Hide that you're typing";
+    public static final String DISAPPEARING_MESSAGES_GESTURE = "Disable disappearing messages swipe";
     public static final String ACTIVE_STATUS = "Hide your active status";
     public static final String LAST_ACTIVE = "Show when someone was last active";
     public static final String SHORT_ACTIVE_NOW = "Shorter Active now";
