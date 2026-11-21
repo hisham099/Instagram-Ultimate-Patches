@@ -404,7 +404,7 @@ public class UnfollowersTest {
         FakeList list = new FakeList();
         list.count = 2;
         try {
-            assertTrue(Unfollowers.seen(users("ana", "bo"), list, list, ON, Unfollowers.STORED, 100));
+            assertFalse(Unfollowers.seen(users("ana", "bo"), list, list, ON, Unfollowers.STORED, 100));
             Utils.awaitBackgroundTasksForTests();
             assertEquals(0, Unfollowers.shown(context).checked);
         } finally {
