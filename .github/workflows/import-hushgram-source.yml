@@ -30,20 +30,20 @@ jobs:
         with:
           repository: SysAdminDoc/HushGram
           ref: da56d39d7c001bf052bcb7951e3051224bd39928
-          path: /tmp/HushGram
+          path: upstream/HushGram
           persist-credentials: false
 
       - name: Verify upstream pin and import non-conflicting files
         shell: bash
         run: |
           set -euo pipefail
-          cd /tmp/HushGram
+          cd upstream/HushGram
           test "$(git rev-parse HEAD)" = "da56d39d7c001bf052bcb7951e3051224bd39928"
           cd "$GITHUB_WORKSPACE"
           rsync -a --ignore-existing \
             --exclude='.git/' \
             --exclude='fixtures/' \
-            /tmp/HushGram/ ./
+            upstream/HushGram/ ./
           mkdir -p third_party/hushgram
           cat > third_party/hushgram/UPSTREAM-PIN.json <<'EOF'
           {
