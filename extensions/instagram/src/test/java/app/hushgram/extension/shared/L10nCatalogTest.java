@@ -65,7 +65,7 @@ public class L10nCatalogTest {
     /** How a category builder reaches those helpers, so its rows are read like the fragment's. */
     private static final String ROW_HELPER_IMPORT = "import static app.hushgram.extension.instagram.settings.HushgramPreferenceFragment.";
 
-    private static final Pattern L10N_CALL = Pattern.compile("\\bL10n\\s*\\.\\s*(?:t|f|quantity)\\s*\\(");
+    private static final Pattern L10N_CALL = Pattern.compile("\\bL10n\\s*\\.\\s*(?:t|f|quantity|bilingual)\\s*\\(");
 
     private static final Pattern PLACEHOLDER = Pattern.compile("%(?:[1-9]\\d*\\$)?[sSbBhHcCdoxXeEfgGaA%n]");
     private static final Pattern PLURAL_VARIANT = Pattern.compile("^(.+)\\|(zero|two|few|many)$");
