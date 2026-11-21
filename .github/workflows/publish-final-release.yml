@@ -1,4 +1,5 @@
 name: Publish IUP final MPP release
+# Final publication pipeline; tag creation and asset upload happen only after tests and build pass.
 
 on:
   push:
