@@ -30,3 +30,13 @@ A patch cannot be described as fully compatible until at least Build-verified; r
 ## Release gate
 
 No release is produced until the source tree builds the MPP, the catalog validator passes, all included patches have evidence records, required NOTICE/license materials are included, and the resulting artifact is inspected. CI success must be linked to the exact commit and artifact SHA-256.
+
+## Reuse of HushGram's 456 baseline
+
+The pinned HushGram source revision `da56d39d7c001bf052bcb7951e3051224bd39928` already declares Instagram `456.0.0.53.78` in `patches/src/main/kotlin/app/morphe/patches/shared/compat/AppCompatibilities.kt`, with ARM64 build code `386214574`, ARMv7 `386214562` and x86 `386214575`, and the two accepted Instagram/Meta signing-certificate digests. Its Gradle version is `0.0.21`.
+
+IUP therefore does not need the user to upload the APK to begin source integration. We will inherit this compatibility declaration and HushGram's source/test/build system as the baseline. Do not downgrade the target to an older HushGram release or change its version metadata by hand.
+
+An APK/DEX fixture is only a separate evidence input for independently re-running patch application and fingerprint checks. HushGram's own declared target and source-level fixture tests are the initial baseline evidence; IUP can proceed with structural import, Kotlin/Java integration, catalog generation, compile and fixture-independent tests without asking the user for a file.
+
+**Evidence distinction:** inherited upstream target metadata is not the same as a new independent IUP run against every extra-source patch. Any imported Piko/Brosssh/Oxbow feature must still be source-adapted, compile-tested and clearly marked as not independently 456-verified until the relevant patch-application tests pass.
