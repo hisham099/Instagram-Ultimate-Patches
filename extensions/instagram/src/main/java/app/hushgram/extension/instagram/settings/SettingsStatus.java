@@ -165,6 +165,11 @@ public final class SettingsStatus {
         return false;
     }
 
+    /** Rewritten by Disable disappearing messages swipe when its gesture hook is installed. */
+    public static boolean disappearingMessagesGesture() {
+        return false;
+    }
+
     public static boolean activeStatus() {
         return false;
     }
