@@ -873,6 +873,10 @@ public class Settings extends BaseSettings {
      */
     public static final BooleanSetting HIDE_TYPING = new BooleanSetting("hushgram_hide_typing", FALSE);
 
+    /** Stops the chat swipe gesture from enabling disappearing messages. Off to start. */
+    public static final BooleanSetting DISABLE_DISAPPEARING_MESSAGES_GESTURE =
+            new BooleanSetting("hushgram_disable_disappearing_messages_gesture", FALSE);
+
     /**
      * The Active status Instagram's presence service is sent while the app is in front
      * ({@link app.hushgram.extension.instagram.direct.ActiveStatus}). Read each time Instagram
