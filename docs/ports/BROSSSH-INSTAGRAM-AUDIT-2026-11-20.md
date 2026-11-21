@@ -113,3 +113,24 @@ A second source-level pass checked the actual HushGram Kotlin implementations ra
 5. **Hide Explore feed** — lower priority because HushGram already has Explore controls and Brosssh's scope is unclear.
 
 The Brosssh source's 439 compatibility declaration remains the only compatibility claim for these patches. The comparison above improves the deduplication decision but does not make any Brosssh patch compatible with 456.
+
+## Hide Reels save button — exact implementation follow-up (2026-11-21)
+
+Pinned source file:
+`patches/src/main/kotlin/app/morphe/patches/instagram/patches/distractionFree/HideReelsSaveButtonPatch.kt`
+
+The implementation is intentionally small:
+
+- Declares a bytecode patch named `Hide Reels save button`, with `default = false`.
+- Declares compatibility through Brosssh's Instagram compatibility constant, whose pinned manifest target is `439.0.0.37.89`.
+- Depends on Morphe's `overrideMobileConfigBooleanFlag` helper.
+- Requests the MobileConfig override `81702::5` to `true`, with the source comment identifying the flag as `ig_channels_4th_ufi::android_hide_save_button`.
+- The pinned manifest lists only `BytecodePatch` as a dependency and has no options. No additional Brosssh Java setting or extension accessor is declared for this patch.
+
+### Port assessment
+
+This is a lower-coupling candidate than the Piko gesture feature: it has no patch-specific Java preference or settings-screen dependency in the pinned Brosssh source. It is still not a safe blind import. The actual `81702::5` flag identifier/value must be confirmed against Instagram 456.0.0.53.78 (or a matching MobileConfig schema), and the Morphe helper's current IUP equivalent must be identified. The comment in an old source file is not proof that the flag remains valid or has the same meaning in 456.
+
+**Decision:** keep as the first Brosssh port candidate after the Piko dependency mapping. Do not add it to the 456-compatible catalog or enable it in a release until the flag is validated and a patch-application/build test passes.
+
+Source: [HideReelsSaveButtonPatch.kt at the pinned Brosssh commit](https://github.com/Luen/brosssh-morphe-patches/blob/de158a4ebfc5376a71058b2c012a9895e46cdb14/patches/src/main/kotlin/app/morphe/patches/instagram/patches/distractionFree/HideReelsSaveButtonPatch.kt).
