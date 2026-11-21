@@ -146,3 +146,18 @@ The pinned HushGram baseline uses a different extension/settings namespace from 
 6. Add the port as an overlay in IUP's build workflow, then run patch-application tests against the exact 456 APK before marking it build-verified.
 
 This mapping is source-architecture work only. No HushGram source file has been modified by this audit commit, and no Piko implementation has been copied into the IUP build graph.
+
+## 12. IUP source port added (2026-11-21)
+
+The source-level port is now present in the imported HushGram tree:
+
+- Patch: `patches/src/main/kotlin/app/morphe/patches/instagram/direct/disappearing/DisableDisappearingMessagesGesturePatch.kt`
+- Runtime accessor: `extensions/instagram/src/main/java/app/hushgram/extension/instagram/direct/DisappearingMessagesGesture.java`
+- Preference: `Settings.DISABLE_DISAPPEARING_MESSAGES_GESTURE`, default `false`.
+- Availability gate: `SettingsStatus.disappearingMessagesGesture()`, enabled by the patch only after its hook is installed.
+- UI: Messages category, shown only when `PatchFamily.DISAPPEARING_MESSAGES_GESTURE` is available.
+- Arabic strings: `extensions/shared/library/src/main/l10n/ar.tsv`; the integrated build now runs `scripts/gen-l10n.py` before compilation.
+- Runtime accessor fails open to Instagram's native gesture if settings are not ready or a read throws.
+- The port retains Piko's paired fingerprint and method-reference cross-check; it does not import Piko's broad settings patch.
+
+**Verification boundary:** this is an IUP source port, not yet certified against Instagram 456 DEX. The exact 456 fingerprint match and patch application remain unverified without a matching APK/DEX fixture. The source build compiles the port but cannot prove that the fingerprint matches the target application. Do not mark this feature as 456-runtime-verified until that separate test passes.
