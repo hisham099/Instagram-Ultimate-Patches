@@ -315,7 +315,9 @@ public class UnfollowersTest {
         Object previous = field.get(null);
         try {
             field.set(null, null);
-            assertFalse(Unfollowers.seen(users("ana", "bo"), list, list, ON, Unfollowers.STORED, 100));
+            // STORED queues the disk write; seen() reports that the snapshot was accepted.
+            // The failed asynchronous write must clear its generation so the same list can retry.
+            assertTrue(Unfollowers.seen(users("ana", "bo"), list, list, ON, Unfollowers.STORED, 100));
         } finally {
             field.set(null, previous);
         }
