@@ -7,8 +7,11 @@ on:
     paths:
       - "patches/catalog.json"
       - "patches/source-candidates.json"
-      - "docs/**"
-      - "scripts/**"
+      - "patches/src/**"
+      - "extensions/**"
+      - "build.gradle.kts"
+      - "settings.gradle.kts"
+      - "gradle/**"
       - ".github/workflows/upstream-baseline-build.yml"
 
 permissions:
