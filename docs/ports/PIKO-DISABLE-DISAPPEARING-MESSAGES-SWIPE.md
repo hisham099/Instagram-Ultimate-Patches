@@ -122,7 +122,7 @@ These are proposed IUP strings, not yet added to an application resource bundle.
 | Availability flag and UI visibility gate | Source-reviewed |
 | Piko settings dependency impact | Source-reviewed; broad dependency intentionally not imported |
 | IUP-native settings adapter | Pending IUP build-tree integration |
-| Arabic/English resource entries | Text prepared; not yet in app resources |
+| Arabic/English UI strings | Added through the shared locale-aware bilingual helper |
 | Exact 456 APK fingerprint match | **Unverified; target APK/DEX required** |
 | IUP code import/build/runtime test | Not done |
 ## 11. HushGram baseline integration mapping (2026-11-21)
@@ -156,7 +156,7 @@ The source-level port is now present in the imported HushGram tree:
 - Preference: `Settings.DISABLE_DISAPPEARING_MESSAGES_GESTURE`, default `false`.
 - Availability gate: `SettingsStatus.disappearingMessagesGesture()`, enabled by the patch only after its hook is installed.
 - UI: Messages category, shown only when `PatchFamily.DISAPPEARING_MESSAGES_GESTURE` is available.
-- Arabic strings: `extensions/shared/library/src/main/l10n/ar.tsv`; the integrated build now runs `scripts/gen-l10n.py` before compilation.
+- Arabic strings: supplied through `L10n.bilingual(...)` for this feature, avoiding an incomplete language-wide translation table.
 - Runtime accessor fails open to Instagram's native gesture if settings are not ready or a read throws.
 - The port retains Piko's paired fingerprint and method-reference cross-check; it does not import Piko's broad settings patch.
 
