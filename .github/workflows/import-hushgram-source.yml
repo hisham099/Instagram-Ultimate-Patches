@@ -44,6 +44,7 @@ jobs:
             --exclude='.git/' \
             --exclude='fixtures/' \
             upstream/HushGram/ ./
+          rm -rf upstream/HushGram
           mkdir -p third_party/hushgram
           cat > third_party/hushgram/UPSTREAM-PIN.json <<'EOF'
           {
