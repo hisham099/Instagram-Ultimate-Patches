@@ -1,0 +1,65 @@
+name: Diagnose IUP localization catalog
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/diagnose-l10n-catalog.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: iup-l10n-diagnostic
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    name: Run only L10nCatalogTest and retain its report
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21 with Gradle cache
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools platforms;android-35 build-tools;35.0.0
+
+      - name: Bootstrap verified AAPT2 metadata
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          chmod +x ./gradlew
+          ./gradlew --no-daemon --write-verification-metadata sha256 :extensions:instagram:compileReleaseNavigationResources
+          grep -F 'aapt2-9.1.0-14792394-linux.jar' gradle/verification-metadata.xml
+          grep -A2 -B1 -F 'aapt2-9.1.0-14792394-linux.jar' gradle/verification-metadata.xml | grep -F '<sha256 value='
+
+      - name: Run the failing localization test only
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -o pipefail
+          ./gradlew --no-daemon --stacktrace :extensions:instagram:testDebugUnitTest --tests app.hushgram.extension.shared.L10nCatalogTest
+
+      - name: Upload JUnit XML and HTML report even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: iup-l10n-diagnostic-${{ github.run_id }}
+          path: |
+            extensions/instagram/build/test-results/testDebugUnitTest/
+            extensions/instagram/build/reports/tests/testDebugUnitTest/
+          if-no-files-found: warn
+          retention-days: 14
