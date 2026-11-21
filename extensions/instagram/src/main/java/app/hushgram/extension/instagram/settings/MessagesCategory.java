@@ -34,6 +34,7 @@ final class MessagesCategory {
                 || build.contains(PatchFamily.INBOX_SUGGESTIONS) || build.contains(PatchFamily.NEW_MESSAGE)
                 || build.contains(PatchFamily.INSTANTS)
                 || build.contains(PatchFamily.THREAD_SEEN) || build.contains(PatchFamily.TYPING)
+                || build.contains(PatchFamily.DISAPPEARING_MESSAGES_GESTURE)
                 || build.contains(PatchFamily.DM_MEDIA_SEEN)
                 || build.contains(PatchFamily.ACTIVE_STATUS)
                 || build.contains(PatchFamily.LAST_ACTIVE)
@@ -138,6 +139,12 @@ final class MessagesCategory {
                 messages.addPreference(toggle(context, Settings.HIDE_TYPING, L10n.t("Hide that you're typing"),
                         L10n.t("People you're chatting with don't see the typing dots while you write, and you "
                                 + "still see theirs.")));
+            }
+            if (build.contains(PatchFamily.DISAPPEARING_MESSAGES_GESTURE)) {
+                messages.addPreference(toggle(context, Settings.DISABLE_DISAPPEARING_MESSAGES_GESTURE,
+                        L10n.t("Disable disappearing messages swipe"),
+                        L10n.t("Stops an upward swipe in a chat from turning on disappearing messages. "
+                                + "Instagram's other chat gestures stay unchanged.")));
             }
             // Under Ads and privacy until 2026-10-26, and a search for that still finds it.
             if (build.contains(PatchFamily.DM_MEDIA_SEEN)) {
